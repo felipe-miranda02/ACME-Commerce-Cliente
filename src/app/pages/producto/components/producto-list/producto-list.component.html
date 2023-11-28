@@ -1,0 +1,182 @@
+<div class="d-md-flex align-items-stretch">
+  <nav class="sidebar navbar-expand-lg col-md-2 col-md-auto" id="sidebar">
+    <div class="p-4 pt-5">
+      <h5 class="row">Categorias</h5>
+      <hr class="row" />
+      <ul class="nav flex-column">
+        <li *ngFor="let categoria of categorias" class="nav-item row">
+          <div
+            role="button"
+            data-toggle="collapse"
+            aria-expanded="false"
+            class="nav-link text-start d-flex justify-content-between align-items-center"
+            [style]="
+              categoria.id == categoriaId
+                ? 'color: var(--bs-white); background-color: var(--bs-link-color)'
+                : ''
+            "
+            (click)="callGetProductos(1, filter, categoria.id)"
+          >
+            <span class="col-10">{{ categoria.nombre }}</span>
+            <span *ngIf="categoria.id == categoriaId" class="col-2">
+              <i class="bi bi-x clickable" (mousedown)="removeCategory()"></i>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+      <div class="col-md-10">
+        <div
+          *ngFor="let producto of productos"
+          class="row mb-3 p-2 border rounded"
+        >
+          <div class="col-md-3 mt-1">
+            <img
+              *ngIf="producto.imagen !== ''"
+              src="{{ producto.imagen }}"
+              class="img-fluid"
+              alt="{{ producto.titulo }}"
+            />
+            <img
+              *ngIf="producto.imagen === ''"
+              src="https://ingeniosas.org/wp-content/plugins/bb-plugin/img/no-image.png"
+              class="img-fluid"
+              alt="null"
+            />
+          </div>
+          <div class="col-md-6 mt-1">
+            <h5>{{ producto.titulo }}</h5>
+
+            <div class="mt-1 mb-1 spec-1">
+              <span>{{ producto.categoria.nombre }}</span>
+              <span class="dot"></span>
+            </div>
+            <p class="text-justify text-truncate para mb-0">
+              {{ producto.descripcion }}<br /><br />
+            </p>
+          </div>
+          <div
+            class="align-items-center align-content-center col-md-3 border-left mt-1"
+          >
+            <div class="d-flex flex-row align-items-center">
+              <h4 class="mr-1">${{ producto.precio }}</h4>
+            </div>
+            <div class="d-flex flex-column mt-4">
+              <a
+                class="btn btn-primary btn-sm"
+                type="button"
+                [routerLink]="[producto.id]"
+                routerLinkActive="active"
+              >
+                Detalles
+              </a>
+              <button
+                class="btn btn-outline-primary btn-sm mt-2"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#carritoModal"
+                (click)="openCantidadDialog(producto)"
+              >
+                Agregar al carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav aria-label="Producto Pages">
+  <ul class="pagination justify-content-center">
+    <li [class]="'page-item' + (currentPage == 1 ? ' disabled' : '')">
+      <button
+        class="page-link"
+        (click)="callGetProductos(currentPage - 1, filter, categoriaId)"
+        tabindex="-1"
+      >
+        Previous
+      </button>
+    </li>
+    <li
+      *ngFor="let pageNumber of pageNumberArray; index as i"
+      [class]="'page-item ' + (pageNumber == currentPage ? 'active' : '')"
+    >
+      <button
+        class="page-link"
+        (click)="callGetProductos(pageNumber, filter, categoriaId)"
+      >
+        {{ pageNumber }}
+      </button>
+    </li>
+    <li [class]="'page-item' + (currentPage == pageCount ? ' disabled' : '')">
+      <button
+        class="page-link"
+        (click)="callGetProductos(currentPage + 1, filter, categoriaId)"
+      >
+        Next
+      </button>
+    </li>
+  </ul>
+</nav>
+<!-- Add to Carrito Modal -->
+<div
+  class="modal fade"
+  id="carritoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="carritoModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form
+      class="modal-content"
+      [formGroup]="addProductoForm"
+      (ngSubmit)="
+        addProductoCarrito(selectedProducto.id, addProductoForm.value)
+      "
+    >
+      <div class="modal-header">
+        <h5 class="modal-title" id="carritoModalTitle">
+          Comprar - {{ selectedProducto.titulo }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="cantidadProducto">Ingrese cantidad</label>
+          <input
+            type="number"
+            min="1"
+            class="form-control select-quantity"
+            id="cantidadProducto"
+            formControlName="cantidad"
+            aria-describedby="cantidadProducto"
+          />
+        </div>
+        <div class="col-md-6"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          type="button"
+          type="submit"
+          data-bs-dismiss="modal"
+          class="btn btn-primary"
+          [disabled]="!addProductoForm.valid"
+        >
+          Agregar al carrito
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

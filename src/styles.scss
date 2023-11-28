@@ -1,0 +1,278 @@
+/* You can add global styles to this file, and also import other style files */
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+
+body {
+  font-family: sans-serif;
+}
+
+em {
+  color: #e71515;
+  font-weight: bold;
+}
+
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+// .card {
+//   margin-top: 1em;
+//   background-color: #fff;
+//   box-shadow: 1px 1px 1px #cabcbc;
+// }
+.card {
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+}
+
+[data-bs-theme="blue"] {
+  
+  --bs-color: #9e9e9e;;
+  --bs-body-bg: var(--bs-white);
+
+  .dropdown-menu {
+    --bs-dropdown-bg: #{mix($blue-500, $blue-600)};
+    --bs-dropdown-link-active-bg: #{$blue-700};
+  }
+
+  .navbar {
+    --bs-navbar-bg: var(--bs-blue);
+    --bs-navbar-color: var(--bs-white);
+    --bs-navbar-hover-color: #eeeeee;
+    --bs-navbar-brand-color: var(--bs-white);
+    --bs-nav-link-color: var(--bs-white);
+    --bs-navbar-brand-hover-color: var(--bs-white);
+
+    &.navbar-dark {
+      background-color: var(--bs-navbar-bg);
+    }
+  }  
+}
+
+[data-bs-theme="red"] {
+  --bs-color: #9e9e9e;
+  --bs-body-bg: var(--bs-white);
+  --bs-link-color: #e53935;
+  --bs-link-hover-color: #c62828;
+  --bs-disabled: #FFCDD2;
+  
+  .pagination {
+    --bs-pagination-active-bg: #e53935;
+    --bs-pagination-active-border-color: #e53935;
+    --bs-pagination-hover-color: #c62828;
+    --bs-pagination-focus-color: #c62828;
+  }
+
+  .navbar {
+    --bs-navbar-bg: #e53935; 
+    --bs-navbar-color: var(--bs-white);
+    --bs-navbar-hover-color: #eeeeee;
+    --bs-navbar-brand-color: var(--bs-white);
+    --bs-nav-link-color: var(--bs-white);
+    --bs-navbar-brand-hover-color: var(--bs-white);
+
+    &.navbar-dark {
+      background-color: var(--bs-navbar-bg);
+    }
+  }
+
+  .navbar > .btn-outline-secondary {
+    --bs-btn-color: --bs-white; 
+    --bs-btn-border-color: --bs-white;
+    --bs-btn-hover-bg: --bs-white;
+    --bs-btn-hover-border-color: --bs-white;
+  }
+
+  .btn-primary {
+    --bs-btn-bg: #e53935; 
+    --bs-btn-border-color: #e53935;
+    --bs-btn-hover-bg: #c62828;
+    --bs-btn-hover-border-color: #c62828;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #b0342b;
+    --bs-btn-active-border-color: #b0342b;
+  }
+
+  .btn-outline-primary {
+    --bs-btn-color: #e53935; 
+    --bs-btn-border-color: #e53935;
+    --bs-btn-hover-bg: #c62828;
+    --bs-btn-hover-border-color: #c62828;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #b0342b;
+    --bs-btn-active-border-color: #b0342b; 
+  }
+}
+
+[data-bs-theme="purple"] {
+  --bs-color: #9e9e9e;
+  --bs-body-bg: var(--bs-white);
+  --bs-link-color: #6a1b9a;
+  --bs-link-hover-color: #4a148c;
+  --bs-disabled: #CE93D8;
+  
+  .pagination {
+    --bs-pagination-active-bg: #6a1b9a;
+    --bs-pagination-active-border-color: #6a1b9a;
+    --bs-pagination-hover-color: #4a148c;
+    --bs-pagination-focus-color: #4a148c;
+  }
+
+  .navbar {
+    --bs-navbar-bg: #6a1b9a; 
+    --bs-navbar-color: var(--bs-white);
+    --bs-navbar-hover-color: #eeeeee;
+    --bs-navbar-brand-color: var(--bs-white);
+    --bs-nav-link-color: var(--bs-white);
+    --bs-navbar-brand-hover-color: var(--bs-white);
+
+    &.navbar-dark {
+      background-color: var(--bs-navbar-bg);
+    }
+  }
+
+  .navbar > .btn-outline-secondary {
+    --bs-btn-color: --bs-white; 
+    --bs-btn-border-color: --bs-white;
+    --bs-btn-hover-bg: --bs-white;
+    --bs-btn-hover-border-color: --bs-white;
+  }
+
+  .btn-primary {
+    --bs-btn-bg: #6a1b9a; 
+    --bs-btn-border-color: #6a1b9a;
+    --bs-btn-hover-bg: #4a148c;
+    --bs-btn-hover-border-color: #4a148c;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #511378;
+    --bs-btn-active-border-color: #511378;
+  }
+
+  .btn-outline-primary {
+    --bs-btn-color: #6a1b9a; 
+    --bs-btn-border-color: #6a1b9a;
+    --bs-btn-hover-bg: #4a148c;
+    --bs-btn-hover-border-color: #4a148c;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #511378;
+    --bs-btn-active-border-color: #511378;
+  }
+}
+
+[data-bs-theme="teal"] {
+  --bs-color: #9e9e9e;
+  --bs-body-bg: var(--bs-white);
+  --bs-link-color: #00695c;
+  --bs-link-hover-color: #004d40;
+  --bs-disabled: #80CBC4;
+  
+  .pagination {
+    --bs-pagination-active-bg: #00695c;
+    --bs-pagination-active-border-color: #00695c;
+    --bs-pagination-hover-color: #004d40;
+    --bs-pagination-focus-color: #004d40;
+  }
+
+  .navbar {
+    --bs-navbar-bg: #00695c; 
+    --bs-navbar-color: var(--bs-white);
+    --bs-navbar-hover-color: #eeeeee;
+    --bs-navbar-brand-color: var(--bs-white);
+    --bs-nav-link-color: var(--bs-white);
+    --bs-navbar-brand-hover-color: var(--bs-white);
+
+    &.navbar-dark {
+      background-color: var(--bs-navbar-bg);
+    }
+  }
+
+  .navbar > .btn-outline-secondary {
+    --bs-btn-color: --bs-white; 
+    --bs-btn-border-color: --bs-white;
+    --bs-btn-hover-bg: --bs-white;
+    --bs-btn-hover-border-color: --bs-white;
+  }
+
+  .btn-primary {
+    --bs-btn-bg: #00695c; 
+    --bs-btn-border-color: #00695c;
+    --bs-btn-hover-bg: #004d40;
+    --bs-btn-hover-border-color: #004d40;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #004033;
+    --bs-btn-active-border-color: #004033;
+  }
+
+  .btn-outline-primary {
+    --bs-btn-color: #00695c; 
+    --bs-btn-border-color: #00695c;
+    --bs-btn-hover-bg: #004d40;
+    --bs-btn-hover-border-color: #004d40;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #004033;
+    --bs-btn-active-border-color: #004033;
+  }
+}
+
+[data-bs-theme="grey"] {
+  --bs-color: #9e9e9e;
+  --bs-body-bg: var(--bs-white);
+  --bs-link-color: #37474f;
+  --bs-link-hover-color: #263238;
+  --bs-disabled: #B0BEC5;
+
+  .pagination {
+    --bs-pagination-active-bg: #37474f;
+    --bs-pagination-active-border-color: #37474f;
+    --bs-pagination-hover-color: #263238;
+    --bs-pagination-focus-color: #263238;
+  }
+
+  .navbar {
+    --bs-navbar-bg: #37474f; 
+    --bs-navbar-color: var(--bs-white);
+    --bs-navbar-hover-color: #eeeeee;
+    --bs-navbar-brand-color: var(--bs-white);
+    --bs-nav-link-color: var(--bs-white);
+    --bs-navbar-brand-hover-color: var(--bs-white);
+
+    &.navbar-dark {
+      background-color: var(--bs-navbar-bg);
+    }
+  }
+
+  .navbar > .btn-outline-secondary {
+    --bs-btn-color: --bs-white; 
+    --bs-btn-border-color: --bs-white;
+    --bs-btn-hover-bg: --bs-white;
+    --bs-btn-hover-border-color: --bs-white;
+  }
+
+  .btn-primary {
+    --bs-btn-bg: #37474f; 
+    --bs-btn-border-color: #37474f;
+    --bs-btn-hover-bg: #263238;
+    --bs-btn-hover-border-color: #263238;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #2b3942;
+    --bs-btn-active-border-color: #2b3942;
+  }
+
+  .btn-outline-primary {
+    --bs-btn-color: #37474f; 
+    --bs-btn-border-color: #37474f;
+    --bs-btn-hover-bg: #263238;
+    --bs-btn-hover-border-color: #263238;
+    --bs-btn-disabled-bg: var(--bs-disabled);
+    --bs-btn-disabled-border-color: var(--bs-disabled);
+    --bs-btn-active-bg: #2b3942;
+    --bs-btn-active-border-color: #2b3942;
+  }
+}
+// [En esta sección se brinda más detalle en cuanto a los productos, herramientas y tecnologías utilizadas.]

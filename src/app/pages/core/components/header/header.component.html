@@ -1,0 +1,76 @@
+<nav [ngClass]="'navbar navbar-expand-lg navbar-dark'" [ngStyle]="navbarStyle" #navbar>
+  <div class="container">
+    <a class="navbar-brand" (click)="onHeaderNameClicked()">
+      <img 
+        [src]="empresa.image" 
+        width="30" 
+        eight="30" 
+        class="d-inline-block align-top" 
+        alt=""
+        onerror="this.onerror=null"
+      >
+      {{ empresa.nombre }}
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbarCollapsing()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div *ngIf="empresa.id != -1" class="collapse navbar-collapse"  [class.collapse]="navbarCollapsed" id="navbarNav">
+      <form 
+        class="form-inline my-2 my-lg-0 mx-auto"
+        [formGroup]="searchForm"
+        (ngSubmit)="onSearchSubmit(searchForm.value)"
+      > <!-- Center the search bar -->
+        <div class="input-group">
+          <input 
+            class="form-control border-white bg-light" 
+            type="search" 
+            placeholder="Search" 
+            aria-label="Search" 
+            formControlName="filter"
+          >
+          <div class="input-group-append px-1">
+            <button class="btn btn-outline-light" type="submit" ngbTooltip="Search">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <ul *ngIf="empresa.id != -1" class="navbar-nav ml-auto"> <!-- Move ul to the right -->
+        <li class="nav-item">
+          <a class="nav-link" href="#" ngbTooltip="Home" [routerLink]="'/store/' + empresa.uri">
+            <i class="bi bi-house-door-fill"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" ngbTooltip="Products" [routerLink]="'/store/' + empresa.uri + '/producto'">
+            <i class="bi bi-box2-fill"></i> Productos
+          </a>
+        </li>
+        <li *ngIf="isUserAuthenticated" class="nav-item">
+          <button class="nav-link" (click)="onHistorialClicked()">
+            <i class="bi bi-receipt"></i> Historial
+          </button>
+        </li>
+        <li *ngIf="isUserAuthenticated" class="nav-item">
+          <button class="nav-link" (click)="onCarritoClicked()">
+            <i class="bi bi-cart-fill"></i> Carrito
+          </button>
+        </li>
+        <li *ngIf="!isUserAuthenticated" class="nav-item">
+          <button class="nav-link" (click)="onLoginClicked()">
+            <i class="bi bi-person-fill"></i> Login
+          </button>
+        </li>
+        <li *ngIf="isUserAuthenticated" class="nav-item">
+            <button class="nav-link" (click)="onMiCuentaClicked()">
+              <i class="bi bi-person-circle"></i> Mi cuenta
+            </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

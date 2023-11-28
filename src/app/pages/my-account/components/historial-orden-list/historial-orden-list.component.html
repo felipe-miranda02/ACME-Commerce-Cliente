@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="card w-100 m-auto mt-5">
+    <div class="card-body">
+          <h2 class="card-title">Historial de Pedidos</h2>
+          <form [formGroup]="searchForm" (ngSubmit)="aplicarFiltros()" class="row">
+            <div class="form-group col-md-2" style="margin-top: 1rem;">
+              <label for="fechaInicio" class="mr-2">Fecha de Inicio:</label>
+              <input type="date" id="fechaInicio" formControlName="fechaInicio" class="form-control" required>
+            </div>
+            <div class="form-group col-md-2" style="margin-top: 1rem;">
+              <label for="fechaFin" class="mr-2">Fecha de Fin:</label>
+              <input type="date" id="fechaFin" formControlName="fechaFin" class="form-control" required>
+            </div>
+            <div class="row mb-3">
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-primary form-control" style="margin-top: 1rem;">Aplicar Filtros</button>
+            </div>
+          </div>
+          </form>
+          
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>ID de Pedido</th>
+                  <th>Fecha de Compra</th>
+                  <th>Costo Total</th>
+                  <th>Estado</th>
+                  <th>Método de Pago</th>
+                  <th>Dirección de Entrega</th>
+                  <th>Servicio de Entrega</th>
+                  <th>Detalles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orden of ordenes">
+                  <td>{{ orden.id }}</td>
+                  <td>{{ ordenService.obtenerFecha(orden.fechaDeCompra) }}</td>
+                  <td>{{ orden.costoTotal | currency }}</td>
+                  
+                  <td>{{ ordenService.obtenerEstadoPedido(orden.estado) }}</td>
+                  <td>{{ ordenService.obtenerMetodoPago(orden.metodoPago) }}</td>
+        
+                  <td>{{ ordenService.obtenerDireccion(orden.direccionDeEntrega) }}</td>
+                  <td>{{ ordenService.obtenerServicioEntrega(orden.servicioDeEntrega) }}</td>
+                  <td> 
+                    <a [routerLink]="[orden.id]">
+                        <button type="button" class="btn btn-primary">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
+                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+                          </svg>
+                        </button>
+                      </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      
+          <nav aria-label="Producto Pages">
+            <ul class="pagination justify-content-center">
+              <li [class]="'page-item' + (currentPage == 1 ? ' disabled' : '')">
+                <button 
+                  class="page-link" 
+                  (click)="callGetOrdenes(currentPage - 1)" 
+                  tabindex="-1"
+                >
+                  Previous
+                </button>
+              </li>
+              <li 
+                *ngFor="let pageNumber of pageNumberArray; index as i;" 
+                [class]="'page-item ' + (pageNumber == currentPage ? 'active' : '')"
+              >
+                <button 
+                  class="page-link" 
+                  (click)="callGetOrdenes(pageNumber)"
+                >
+                  {{ pageNumber }}
+                </button>
+              </li>
+              <li [class]="'page-item' + (currentPage == pageCount ? ' disabled' : '')">
+                <button 
+                  class="page-link" 
+                  (click)="callGetOrdenes(currentPage + 1)"
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>  
+    </div>
+  </div>
+</div>
+  

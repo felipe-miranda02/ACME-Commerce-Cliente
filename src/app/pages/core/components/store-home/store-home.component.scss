@@ -1,0 +1,12 @@
+
+.position-relative {
+  position: relative;
+}
+
+.banner-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* Ensure the banner image covers the container */
+  position: relative;
+  margin: 0 auto;
+}

@@ -1,0 +1,36 @@
+<div>
+  <app-header
+    [attr.data-bs-theme]="empresa.lookAndFeel?.paletaDeColores"
+  ></app-header>
+</div>
+<div class="container">
+  <div class="position-relative">
+    <img
+      [src]="empresa.lookAndFeel?.imagenBanner"
+      class="img-fluid banner-image"
+    />
+  </div>
+</div>
+
+<div
+  *ngIf="router.url == '/store/' + empresa.uri"
+  class="container mt-5"
+  [attr.data-bs-theme]="empresa.lookAndFeel?.paletaDeColores"
+>
+  <div class="jumbotron">
+    <h1 class="display-4">{{ empresa.nombre }}</h1>
+    <p class="lead">Bienvenido.</p>
+    <hr class="my-4" />
+    <p>Mire nuestros últimos productos y ofertas.</p>
+    <a class="btn btn-primary btn-lg" [routerLink]="'producto'" role="button"
+      >Shop</a
+    >
+  </div>
+</div>
+
+<div
+  class="container"
+  [attr.data-bs-theme]="empresa.lookAndFeel?.paletaDeColores"
+>
+  <router-outlet></router-outlet>
+</div>

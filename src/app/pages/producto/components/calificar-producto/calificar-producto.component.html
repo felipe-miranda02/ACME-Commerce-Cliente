@@ -1,0 +1,25 @@
+<div class="container">
+    <h2 class="mt-4">Calificar Producto</h2>
+    <form (ngSubmit)="calificarProducto()" class="mt-3">
+      <div class="form-group">
+        <label for="titulo" style="margin-top: 1rem;">Título:</label>
+        <input type="text" id="titulo" name="titulo" [(ngModel)]="titulo" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="descripcion" style="margin-top: 1rem;">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" [(ngModel)]="descripcion" class="form-control" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="valoracion" style="margin-top: 1rem;">Estrellas:</label>
+        <select id="valoracion" name="valoracion" [(ngModel)]="valoracion" class="form-control" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Calificar</button>
+    </form>
+  </div>
+  

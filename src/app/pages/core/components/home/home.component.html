@@ -1,0 +1,26 @@
+<div data-bs-theme="blue">
+  <app-header></app-header>
+</div>
+
+<div class="container">
+  <div class="card w-100 m-auto mt-5">
+    <div class="card-body">
+      <h2 class="card-title">Tiendas que trabajan con nosotros</h2>
+      <p>
+        En nuestra empresa, nos dedicamos con entusiasmo a promover la
+        sostenibilidad. Con ese compromiso en mente, presentamos una lista de
+        empresas disponibles, organizadas de manera que las más sostenibles se
+        encuentren en la parte superior. Estamos encantados de compartir con
+        ustedes opciones que reflejan nuestro compromiso con prácticas
+        responsables y amigables con el medio ambiente.
+      </p>
+      <ul class="list-group">
+        <li *ngFor="let empresa of empresaList" class="list-group-item">
+          <a class="link-secondary" [routerLink]="'/store/' + empresa.uri">{{
+            empresa.nombre
+          }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

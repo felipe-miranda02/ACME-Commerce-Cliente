@@ -1,0 +1,250 @@
+<!-- <div class="container">
+  <li>(id 1) Nombre Producto 1 $20 c/u. cant 1 ($20)</li>
+  <li>(id 2) Nombre Producto 2 $40 c/u. cant 3 ($120)</li>
+  <li>(id 3) Nombre Producto 3 $60 c/u. cant 6 ($360)</li>
+  <li>(id 4) Nombre Producto 4 $80 c/u. cant 1 ($80)</li>
+  <li>Subtotal = $580</li>
+</div> -->
+<div class="container">
+  <div class="card w-100 m-auto mt-5 mb-5">
+    <div class="card-body">
+      <h2 class="card-title">Mi Carrito</h2>
+      <div class="shopping-cart">
+        <div class="column-labels">
+          <label class="product-image">Image</label>
+          <label class="product-details">Product</label>
+          <label class="product-price">Price</label>
+          <label class="product-quantity">Quantity</label>
+          <label class="product-removal">Remove</label>
+          <label class="product-line-price">Total</label>
+        </div>
+
+        <div class="product" *ngFor="let productOrder of productos">
+          <div class="product-image">
+            <img src="{{ productOrder.producto.imagen }}" />
+          </div>
+          <div class="product-details">
+            <div class="product-title">
+              {{ productOrder.producto.titulo }}
+              <span style="color: grey">
+                - # {{ productOrder.producto.id }}</span
+              >
+            </div>
+            <p class="product-description">
+              {{ productOrder.producto.descripcion }} <br />
+              {{ productOrder.producto.categoria }}
+            </p>
+            <li>
+              Producto Reciclable:
+              {{ productOrder.producto.productoReciclable ? "SI" : "NO" }}
+            </li>
+            <li>
+              Embalaje Reciclable:
+              {{ productOrder.producto.embalajeReciclable ? "SI" : "NO" }}
+            </li>
+          </div>
+          <div class="product-price">{{ productOrder.producto.precio }}</div>
+          <div class="product-quantity">
+            <input
+              type="number"
+              #input
+              [value]="productOrder.cantidad"
+              min="1"
+              onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+              (change)="modifCantidadProducto(productOrder, $event)"
+            />
+          </div>
+          <div class="product-removal">
+            <button
+              class="remove-product"
+              (click)="removeProducto(productOrder.producto.id)"
+            >
+              Remove
+            </button>
+          </div>
+          <div class="product-line-price">
+            {{ productOrder.producto.precio * productOrder.cantidad }}
+          </div>
+        </div>
+
+        <div class="totals">
+          <div class="totals-item">
+            <label
+              >* El costo de envio puede variar segun el metodo elegido</label
+            >
+          </div>
+          <div class="totals-item totals-item-total">
+            <label>Subtotal</label>
+            <div class="totals-value" id="cart-total">{{ subtotal }}</div>
+          </div>
+        </div>
+
+        <button
+          (click)="goCheckout()"
+          class="btn btn-primary float-end"
+          [disabled]="productos.length < 1"
+        >
+          Finalizar Compra
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-5" style="margin: 1em" *ngIf="crossSellings.length > 0">
+  <p class="h4" style="margin: auto; margin-top: 2em; margin-bottom: -1em">
+    Tambien te puede interesar
+  </p>
+  <div
+    id="carouselExampleControls"
+    class="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-inner">
+      <div *ngFor="let producto of crossSellings; let i = index">
+        <div [class]="'carousel-item' + (i === 0 ? ' active' : '')">
+          <div class="container mt-5 mb-5">
+            <div class="d-flex justify-content-center row">
+              <div class="col-md-10">
+                <div class="row p-2 bg-white border rounded">
+                  <div class="col-md-3 mt-1">
+                    <img
+                      *ngIf="producto.imagen !== ''"
+                      [src]="producto.imagen"
+                      class="img-fluid"
+                      [alt]="producto.titulo"
+                    />
+                    <img
+                      *ngIf="producto.imagen === ''"
+                      src="https://ingeniosas.org/wp-content/plugins/bb-plugin/img/no-image.png"
+                      class="img-fluid"
+                      alt="null"
+                    />
+                  </div>
+                  <div class="col-md-6 mt-1">
+                    <h5>{{ producto.titulo }}</h5>
+
+                    <div class="mt-1 mb-1 spec-1">
+                      <span>{{ producto.categoria.nombre }}</span>
+                      <span class="dot"></span>
+                    </div>
+                    <p class="text-justify text-truncate para mb-0">
+                      {{ producto.descripcion }}<br /><br />
+                    </p>
+                  </div>
+                  <div
+                    class="align-items-center align-content-center col-md-3 border-left mt-1"
+                  >
+                    <div class="d-flex flex-row align-items-center">
+                      <h4 class="mr-1">${{ producto.precio }}</h4>
+                    </div>
+                    <div class="d-flex flex-column mt-4">
+                      <a
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        (click)="navigateProduct(producto.id)"
+                      >
+                        Detalles
+                      </a>
+                      <button
+                        class="btn btn-outline-primary btn-sm mt-2"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#carritoModal"
+                        (click)="openCantidadDialog(producto)"
+                      >
+                        Agregar al carrito
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleControls"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleControls"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add to Carrito Modal -->
+  <div
+    class="modal fade"
+    id="carritoModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="carritoModalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <form
+        class="modal-content"
+        [formGroup]="addProductoForm"
+        (ngSubmit)="
+          addProductoCarrito(selectedProducto!.id, addProductoForm.value)
+        "
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="carritoModalTitle">
+            Comprar - {{ selectedProducto?.titulo }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="cantidadProducto">Ingrese cantidad</label>
+            <input
+              type="number"
+              min="1"
+              class="form-control select-quantity"
+              id="cantidadProducto"
+              formControlName="cantidad"
+              aria-describedby="cantidadProducto"
+            />
+          </div>
+          <div class="col-md-6"></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button
+            type="button"
+            type="submit"
+            data-bs-dismiss="modal"
+            class="btn btn-primary"
+            [disabled]="!addProductoForm.valid"
+          >
+            Agregar al carrito
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

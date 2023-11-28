@@ -1,0 +1,87 @@
+// button,
+// select {
+//   padding: 0.6em;
+// }
+
+// select {
+//   width: 92%;
+//   option {
+//     padding: 10px;
+//   }
+// }
+
+// .button-finalizar-compra {
+//   background-color: #4caf50; /* Green */
+//   border: none;
+//   color: white;
+//   padding: 15px 32px;
+//   text-align: center;
+//   text-decoration: none;
+//   display: inline-block;
+//   font-size: 16px;
+// }
+
+// .title {
+//   margin: 1em;
+// }
+
+// h5 {
+//   margin: 0.2em;
+// }
+
+.hide-map {
+  visibility: hidden;
+  height: 0.1px;
+  transition: height 0.25s ease-out;
+}
+
+.show-map {
+  transition: height 0.15s ease-in;
+}
+
+.map-inputs {
+  & input {
+    margin: 1em 0.5em;
+    max-width: 90%;
+  }
+}
+
+// .radio-btns {
+//   margin: 1em;
+// }
+
+// .bold {
+//   font-weight: bold;
+// }
+
+// .card {
+//   overflow: hidden;
+//   padding: 0.5em;
+//   .card-header {
+//     display: flex;
+//     align-content: center;
+//     justify-content: space-between;
+//     align-items: center;
+//   }
+// }
+
+// .search-input {
+//   width: 90%;
+//   margin: auto;
+//   margin-top: 1em;
+//   margin-bottom: 1em;
+// }
+
+// .card-credit {
+//   margin: 1em;
+//   padding-bottom: 1em;
+//   box-shadow:
+//     rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+//     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+//   border-radius: 16px;
+//   background-color: #d2e0fb;
+// }
+
+select > option.hidden-option {
+  display: none;
+}

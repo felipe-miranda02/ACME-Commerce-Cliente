@@ -1,0 +1,12 @@
+<div>
+    <button class="btn" (click)="file.click()">Subir imagen</button>
+
+    <input
+        #file
+        type="file"
+        (change)="onImageUploaded($event)"
+        accept=".png, .jpg, .jpeg, .gif"
+    />
+    
+    <br><br>
+</div>

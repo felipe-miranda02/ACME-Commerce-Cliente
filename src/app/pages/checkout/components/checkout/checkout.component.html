@@ -1,0 +1,378 @@
+<div class="container m-auto">
+  <div class="card m-auto mt-5">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Carrito</span>
+            <span class="badge bg-secondary rounded-circle">
+              {{ sumQuantity }}
+            </span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li
+              *ngFor="let product_Order of productos"
+              class="list-group-item d-flex justify-content-between lh-condensed"
+            >
+              <div>
+                <h6 class="my-0">{{ product_Order.producto.titulo }}</h6>
+                <small class="text-muted">
+                  {{ product_Order.producto.descripcion }}
+                </small>
+              </div>
+              <span *ngIf="product_Order.cantidad > 1" class="text-muted">
+                {{ product_Order.cantidad }}
+                x ${{ product_Order.producto.precio }}
+              </span>
+              <span *ngIf="product_Order.cantidad == 1" class="text-muted">
+                ${{ product_Order.precio }}
+              </span>
+            </li>
+            <li
+              class="list-group-item d-flex justify-content-between lh-condensed"
+            >
+              <div>
+                <h6 class="my-0">Costo de envío</h6>
+              </div>
+              <span class="text-muted">
+                ${{ getSelectedServicioEntrega()?.costo ?? 0 }}
+              </span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total</span>
+              <strong>{{ getTotal() }}</strong>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Checkout</h4>
+          <form [formGroup]="orderForm" autocomplete="off">
+            <div class="row mt-3">
+              <label for="direccion">
+                <h5>Seleccionar un metodo de envio</h5>
+              </label>
+              <div class="radio-btns">
+                <ng-container
+                  *ngFor="let option of radio_options; let i = index"
+                >
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      [value]="option"
+                      formControlName="radioOption"
+                    />
+                    <label
+                      class="form-check-label"
+                      [ngClass]="
+                        option === orderForm.value.radioOption ? 'bold' : ''
+                      "
+                    >
+                      {{ option }}
+                    </label>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <hr class="my-2" />
+
+            <div
+              *ngIf="orderForm.value.radioOption == 'Envio a domicilio'"
+              class="row mt-3 mb-3"
+            >
+              <label for="direccion">
+                <h5>Direccion</h5>
+              </label>
+              <div class="col-md-6">
+                <select
+                  class="form-select selectpicker"
+                  aria-label="Seleccionar direccion"
+                  id="direccion"
+                  name="direccion_select"
+                  formControlName="direccion"
+                >
+                  <option class="hidden-option" [defaultSelected]="true">
+                    Seleccionar dirección
+                  </option>
+                  <option
+                    [value]="direccion.id"
+                    *ngFor="let direccion of direcciones"
+                  >
+                    {{ direccion.nombre }}: {{ direccion.direccionFormateada }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="
+                    showAgregarDirecciones = !showAgregarDirecciones;
+                    !statusMap ? initSearch() : null
+                  "
+                >
+                  Agregar direccion
+                </button>
+              </div>
+            </div>
+
+            <div
+              *ngIf="orderForm.value.radioOption !== 'Envio a domicilio'"
+              class="row mt-3 mb-3"
+            >
+              <h5>Seleccionar centro de pick-up</h5>
+              <small class="text-body-secondary mb-3">
+                Haga click en el punto del mapa en el que desea retirar
+              </small>
+              <div class="my-google-map">
+                <google-map
+                  [options]="mapOptions"
+                  width="10vw"
+                  height="50vh"
+                  width="100%"
+                >
+                  <map-marker
+                    *ngFor="let pickup of pickup_centers; let i = index"
+                    [position]="pickup.position"
+                    label="{{ getLabelMarkerMap(i) }}"
+                    title="{{ pickup.nombre }}"
+                    (mapClick)="handleMarkerSelect(pickup)"
+                  ></map-marker>
+                </google-map>
+              </div>
+              <div class="mt-3 mb-3">
+                Retirar en:
+                <input
+                  class="form-control"
+                  style="width: 100%"
+                  type="text"
+                  id="pickup"
+                  formControlName="pickup"
+                  readonly
+                  [value]="
+                    '#' +
+                    orderForm.value.pickup?.id +
+                    ' - ' +
+                    orderForm.value.pickup?.nombre +
+                    ': ' +
+                    orderForm.value.pickup?.direccionFormateada
+                  "
+                  placeholder="Seleccione en el mapa uno de los puntos de pick-up disponibles"
+                />
+              </div>
+            </div>
+
+            <div *ngIf="orderForm.value.radioOption" class="row mt-3 mb-3">
+              <hr class="my-2" />
+              <label for="servicio_entrega">
+                <h5>Servicio de Entrega</h5>
+              </label>
+              <div class="col-md-6">
+                <select
+                  class="form-control form-select selectpicker"
+                  aria-label="Seleccionar servicio de entrega"
+                  id="servicio_entrega"
+                  name="servicio_enrtega_select"
+                  formControlName="servicio_entrega"
+                >
+                  <option class="hidden-option" [defaultSelected]="true">
+                    Seleccionar servicio de entrega
+                  </option>
+                  <option
+                    [value]="servicioEntrega.id"
+                    *ngFor="let servicioEntrega of serviciosEntrega"
+                  >
+                    <span class="c-medium"> {{ servicioEntrega.nombre }} : </span>
+                    {{ servicioEntrega.velocidad }}
+                    - ${{ servicioEntrega.costo }}
+                    {{formatServicoEntrega(servicioEntrega.huellaDeCarbono)}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <hr class="my-2" />
+
+            <div class="row mt-3 mb-3">
+              <h4>Payment</h4>
+              <div class="radio-btns">
+                <ng-container
+                  *ngFor="let paymentMethod of paymentMethods; let i = index"
+                >
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      [value]="paymentMethod.id"
+                      formControlName="payment"
+                      class="form-check-input"
+                    />
+                    <label
+                      class="form-check-label"
+                      [ngClass]="
+                        paymentMethod.id === orderForm.value.payment
+                          ? 'bold'
+                          : ''
+                      "
+                    >
+                      {{ paymentMethod.label }}
+                    </label>
+                  </div>
+                </ng-container>
+              </div>
+              <div
+                class="row gy-3 card-credit"
+                *ngIf="[1, 2].includes(orderForm.value.payment)"
+              >
+                <div class="col-md-6">
+                  <label for="cc-name" class="form-label">Name on card</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cc-name"
+                    placeholder=""
+                    required=""
+                  />
+                  <small class="text-body-secondary">
+                    Full name as displayed on card
+                  </small>
+                  <div class="invalid-feedback">Name on card is required</div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="cc-number" class="form-label"
+                    >Credit card number</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cc-number"
+                    placeholder=""
+                    required=""
+                  />
+                  <div class="invalid-feedback">
+                    Credit card number is required
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <label for="cc-expiration" class="form-label"
+                    >Expiration</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cc-expiration"
+                    placeholder=""
+                    required=""
+                  />
+                  <div class="invalid-feedback">Expiration date required</div>
+                </div>
+
+                <div class="col-md-3">
+                  <label for="cc-cvv" class="form-label">CVV</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cc-cvv"
+                    placeholder=""
+                    required=""
+                  />
+                  <div class="invalid-feedback">Security code required</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="mb-4" />
+
+            <div class="row">
+              <div>
+                <button
+                  class="btn btn-primary btn-lg col-md-12"
+                  type="submit"
+                  [disabled]="!orderForm.valid"
+                  (click)="finalizarPedido(orderForm.value)"
+                >
+                  {{
+                    orderForm.value.payment == 4
+                      ? "Continuar a Mercado Pago"
+                      : "Confirmar compra"
+                  }}
+                </button>
+                <div *ngIf="showError" class="alert alert-danger" role="alert">
+                  <span [innerHTML]="errorMessage"></span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-5">
+    <div
+      class="card"
+      [ngClass]="!showAgregarDirecciones ? 'hide-map' : 'show-map'"
+    >
+      <div class="card-header">
+        Agregar Direccion
+        <button
+          type="button"
+          class="btn-close float-end"
+          aria-label="Close"
+          (click)="showAgregarDirecciones = !showAgregarDirecciones"
+        ></button>
+      </div>
+      <form
+        [formGroup]="add_direccion_form"
+        (ngSubmit)="agregarDireccion(add_direccion_form.value)"
+        style="padding: 1em"
+      >
+        <small class="text-body-secondary mt-3 mb-3">
+          Escribe una dirección y elige la correcta desde la lista de opciones
+        </small>
+        <div class="map-inputs">
+          <input
+            class="form-control search-input"
+            #search
+            formControlName="searchInput"
+            type="search"
+            id="search"
+            (keydown.enter)="$event.preventDefault()"
+          />
+
+          <input
+            class="form-control search-input"
+            #search
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Nombre. Ej: 'Casa'"
+          />
+        </div>
+        <div class="my-google-map">
+          <google-map
+            #map_add_dir
+            id="map_add_dir"
+            [options]="mapOptions"
+            height="25vh"
+            width="100%"
+          >
+            <map-marker [position]="marker"> </map-marker>
+          </google-map>
+        </div>
+        <div class="modal-footer" style="margin: 1em">
+          <button
+            type="button"
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!add_direccion_form.valid"
+          >
+            Guardar Direccion
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
