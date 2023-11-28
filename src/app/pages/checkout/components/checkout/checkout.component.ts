@@ -60,7 +60,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   private empresaId: string;
   private orderId?: number;
   sumQuantity = 0;
-  
 
   radio_options = ['Envio a domicilio', 'Retiro en Pick-up center'];
   paymentMethods?: { id: number; label: string; method_value: number }[];
@@ -169,7 +168,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       },
     });
 
-    this.sumQuantity = this.productos?.reduce((acc, prod) => acc + prod.cantidad, 0) ?? 0;
+    this.sumQuantity =
+      this.productos?.reduce((acc, prod) => acc + prod.cantidad, 0) ?? 0;
   }
 
   validateControl = (controlName: string) => {
@@ -320,7 +320,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         return ' (Hidrico)';
       case 3:
         return ' (Electrico)';
-      case 4: 
+      case 4:
         return ' (Medio Liviano)';
       default:
         return '';

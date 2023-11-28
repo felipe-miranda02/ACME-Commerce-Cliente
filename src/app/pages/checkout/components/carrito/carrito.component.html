@@ -63,7 +63,7 @@
             </button>
           </div>
           <div class="product-line-price">
-            {{ productOrder.producto.precio * productOrder.cantidad }}
+            {{ toFixed(productOrder.producto.precio * productOrder.cantidad) }}
           </div>
         </div>
 

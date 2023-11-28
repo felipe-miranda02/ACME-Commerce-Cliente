@@ -61,6 +61,7 @@ export class CarritoComponent implements OnInit {
         this.productos.map(
           (p) => (this.subtotal += p.producto.precio * p.cantidad),
         );
+        this.subtotal = Number(this.subtotal.toFixed(2));
         this.orderService.setDatosCheckout({
           orderId: orderId,
           productos: this.productos,
@@ -147,6 +148,7 @@ export class CarritoComponent implements OnInit {
       this.productos.map(
         (p) => (this.subtotal += p.producto.precio * p.cantidad),
       );
+      this.subtotal = Number(this.subtotal.toFixed(2));
       this.productosService
         .modifCantidadProducto(productOrder.producto.id, newCantidad)
         .subscribe({
@@ -159,5 +161,9 @@ export class CarritoComponent implements OnInit {
           },
         });
     }
+  }
+
+  toFixed(x: number) {
+    return (x = Number(x.toFixed(2)));
   }
 }
